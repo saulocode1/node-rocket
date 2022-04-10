@@ -1,49 +1,32 @@
+/*
+   cpf - string
+   name - string
+   id - uuid (universally unique identifier)
+   statement - [] (extrato, créditos, débitos, etc)
+*/
+
 const express = require("express");
+const { v4: uuidv4 } = require("uuid"); // (v4 - números randômicos)
 
 const app = express();
 
-app.use(express.json()); // informar para express arquivo json
+app.use(express.json());
 
-/*
-   GET – Buscar uma informação no servidor
-   POST – Inserir uma informação no servidor
-   PUT – Alterar uma informação no servidor
-   PATCH – Atualizar uma informação no específica	
-   DELETE – Deletar uma informação no servidor
-*/
+const costumers = [];
 
-/*
-   Tipos de parâmetros:
+app.post("/account", (request, response) => {
+   const { cpf, name } = request.body;
 
-   * Route Params => Identificar um recurso editar/deletar/buscar
-   * Query Params => Paginação / Filtro 
-   * Body Params => Os objetos para inserção/alteração (cadastro, update) [JSON]
-*/
+   const id = uuidv4();
 
-app.get("/courses", (request, response) => {
-   const query = request.query; // paginação / url
-   console.log(query);
-   return response.json(["Curso 1", "Curso 2", "Curso 3"]);
-});
+   costumers.push({
+      cpf,
+      name,
+      id,
+      statement: [],
+   });
 
-app.post("/courses", (request, response) => {
-   const body = request.body;
-   console.log(body);
-   return response.json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"]);
-});
-
-app.put("/courses/:id", (request, response) => {
-   const { id } = request.params;
-   console.log(id);
-   return response.json(["Curso 6", "Curso 2", "Curso 3", "Curso 4"]);
-});
-
-app.patch("/courses/:id", (request, response) => {
-   return response.json(["Curso 6", "Curso 7", "Curso 3", "Curso 4"]);
-});
-
-app.delete("/courses/:id", (request, response) => {
-   return response.json(["Curso 6", "Curso 7", "Curso 4"]);
+   return response.status(201).send(); // status 201 - quando algum dado for criado
 });
 
 app.listen(3333);
