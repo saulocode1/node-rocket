@@ -2,27 +2,33 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json()); // informar para express arquivo json
+
 /*
    GET – Buscar uma informação no servidor
    POST – Inserir uma informação no servidor
    PUT – Alterar uma informação no servidor
    PATCH – Atualizar uma informação no específica	
    DELETE – Deletar uma informação no servidor
-
 */
 
 /*
    Tipos de parâmetros:
 
-   Route params => Identificar um recurso editar/deletar/buscar
-
+   * Route Params => Identificar um recurso editar/deletar/buscar
+   * Query Params => Paginação / Filtro 
+   * Body Params => Os objetos para inserção/alteração (cadastro, update) [JSON]
 */
 
 app.get("/courses", (request, response) => {
+   const query = request.query; // paginação / url
+   console.log(query);
    return response.json(["Curso 1", "Curso 2", "Curso 3"]);
 });
 
 app.post("/courses", (request, response) => {
+   const body = request.body;
+   console.log(body);
    return response.json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"]);
 });
 
